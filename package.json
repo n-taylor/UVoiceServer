@@ -24,7 +24,7 @@
     "mongoose": "latest",
     "morgan": "~1.6.1",
     "multer": "latest",
-    "mysql": "latest",
+    "mysql": "^2.15.0",
     "node-constants": "latest",
     "nodemailer": "^2.4.1",
     "nodemailer-smtp-transport": "^2.5.0",

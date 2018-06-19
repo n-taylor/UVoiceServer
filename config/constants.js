@@ -9,4 +9,7 @@ module.exports = {
 	"smtp_from_name":"express-mvc-generator",
 	"alert_email":"aler@email.com",
 	"alert_email_name":"Aler Name",
+
+	'url_login':'https://clinweb.med.utah.edu/pricing-transparency-api/auth/login',
+	
 };

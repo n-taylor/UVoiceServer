@@ -1,6 +1,8 @@
 var numeral = require('numeral');
 var bcrypt = require('bcrypt-nodejs');
 var dateFormat = require('dateformat');
+var request = require('request');
+var constants = require('../../config/constants');
 
 exports.loggedIn = function(req, res, next)
 {
@@ -50,22 +52,20 @@ exports.signup = function(req, res) {
 
 exports.login = function(req, res) {
 
+	var obj = { username: req.body.username, password: req.body.password };
 
+
+	var options = {
+		uri: constants.url_login,
+		body: JSON.stringify(obj),
+		method: 'POST',
+		headers: { 'Content-Type':'application/json'}
+	};
 	
-	if (req.session.user) {
-
-		res.redirect('/home');
-
-	} else {
-
-		res.render('login', {
-			error : req.flash("error"),
-			success: req.flash("success"),
-			session:req.session
-		});
-
-	}
-	
+	request(options, function(error, response){
+		console.log('Cookie name: ' + response.headers.set-cookie[0]);
+		res.send(response);
+	});
 }
 
 
