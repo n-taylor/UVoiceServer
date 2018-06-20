@@ -3,6 +3,7 @@ var bcrypt = require('bcrypt-nodejs');
 var dateFormat = require('dateformat');
 var request = require('request');
 var constants = require('../../config/constants');
+var sql = require('../models/sql');
 
 exports.loggedIn = function(req, res, next)
 {
@@ -63,9 +64,22 @@ exports.login = function(req, res) {
 	};
 	
 	request(options, function(error, response){
-		console.log('Cookie name: ' + response.headers.set-cookie[0]);
-		res.send(response);
+		res.headers = response.headers;
+		res.send(response.body);
 	});
+
+	// For testing purposes, insert into the database
+	sql.connect(sql.TEST_MODE, function(message){
+		console.log(message);
+	});
+
+	// sql.insert(obj.username, function(){
+	// 	console.log('Inserted ' + obj.username + ' into the db');
+	// });
+
+	// sql.getId('u0971108', function(rows){
+	// 	console.log('Rows obtained: ' + rows);
+	// });
 }
 
 
