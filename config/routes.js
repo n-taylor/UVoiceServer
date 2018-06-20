@@ -18,6 +18,7 @@ module.exports = function (app) {
     app.get('bedCensus/all', home.loggedIn, edw.allUnitsCensus);
 
     app.post('/login', home.login);
+    app.get('/logout', home.loggedIn, home.logout);
 
 
 }

@@ -91,5 +91,23 @@ exports.login = function(req, res) {
 	// });
 }
 
+exports.logout = function (req, res){
+	var options = {
+		uri: constants.url_logout,
+		method: 'GET',
+		headers: req.headers,
+		rejectUnauthorized: false,
+	}
+
+	request(options, function(err, response){
+		if (err){
+			throw err;
+		}
+
+		res.headers = response.headers;
+		res.send(response.body);
+	});
+}
+
 
     

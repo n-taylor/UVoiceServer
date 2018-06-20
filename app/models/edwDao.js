@@ -23,6 +23,7 @@ exports.allProceduresCategories = function(req, res){
         uri: constants.url_procedures_all_categories,
         method: 'GET',
         headers: req.headers,
+        rejectUnauthorized: false, // DELETE THIS!!!!
     }
 
     request(options, function(err, response){

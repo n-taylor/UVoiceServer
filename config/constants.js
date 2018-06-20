@@ -11,6 +11,6 @@ module.exports = {
 	"alert_email_name":"Aler Name",
 
 	'url_login':'https://clinweb.med.utah.edu/pricing-transparency-api/auth/login',
+	'url_logout':'https://clinweb.med.utah.edu/pricing-transparency-api/auth/logout',
 	'url_procedures_all_categories': "https://clinweb.med.utah.edu/pricing-transparency-api/pricing/getCategories",
-	
 };
