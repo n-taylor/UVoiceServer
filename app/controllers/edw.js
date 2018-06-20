@@ -12,3 +12,7 @@ exports.allUnitsCensus = function(req, res){
     console.log('All beds accessed: ' + beds);
     res.send(beds);
 }
+
+exports.allProceduresCategories = function(req, res){
+    edw.allProceduresCategories(req, res);
+}

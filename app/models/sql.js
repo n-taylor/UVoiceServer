@@ -27,7 +27,6 @@ exports.connect = function(mode, next) {
         user: 'root',
         password: '5bro=ADBNM',
         database: dbName,
-        insecureAuth: true
     });
 
     state.mode = mode;

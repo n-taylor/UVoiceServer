@@ -5,6 +5,8 @@ var request = require('request');
 var constants = require('../../config/constants');
 var sql = require('../models/sql');
 
+var cookieRegex = /(\S+)=(\S+); path=\S+; /;
+
 exports.loggedIn = function(req, res, next)
 {
 	// if (req.session.user) { // req.session.passport._id
@@ -60,18 +62,25 @@ exports.login = function(req, res) {
 		uri: constants.url_login,
 		body: JSON.stringify(obj),
 		method: 'POST',
-		headers: { 'Content-Type':'application/json'}
+		headers: {'Content-Type': 'application/json'}
 	};
 	
 	request(options, function(error, response){
+		if (error){
+			throw error;
+		}
+		var match = cookieRegex.exec(response.headers['set-cookie'][0]);
 		res.headers = response.headers;
+		if (match){
+			res.cookie(match[1], match[2]);
+		}
 		res.send(response.body);
 	});
 
 	// For testing purposes, insert into the database
-	sql.connect(sql.TEST_MODE, function(message){
-		console.log(message);
-	});
+	// sql.connect(sql.TEST_MODE, function(message){
+	// 	console.log(message);
+	// });
 
 	// sql.insert(obj.username, function(){
 	// 	console.log('Inserted ' + obj.username + ' into the db');

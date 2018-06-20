@@ -1,4 +1,5 @@
-
+var constants = require('../../config/constants');
+var request = require('request');
 
 exports.censusByUnit = function(unit){
     var lUnit = unit.toLowerCase();    
@@ -15,4 +16,23 @@ exports.censusByUnit = function(unit){
 
 exports.allUnitsCensus = function(){
     return '{ "2North":5, "5West":2, "Burn":1 }';
+}
+
+exports.allProceduresCategories = function(req, res){
+    var options = {
+        uri: constants.url_procedures_all_categories,
+        method: 'GET',
+        headers: req.headers,
+    }
+
+    request(options, function(err, response){
+        if (err){
+            res.send(err.message);
+        }
+
+        console.log('Response received: ' + response.body);
+
+        res.headers = response.headers;
+        res.send(response.body);
+    });
 }
