@@ -1,10 +1,11 @@
 var express = require('express');
+var https = require('https');
 
 var app = express();
 var multer = require('multer')
 var constants = require('constants');
 var constant = require('./config/constants');
-
+var fs = require('fs');
 
 var port = process.env.PORT || 8042;
 var mongoose = require('mongoose');
@@ -44,10 +45,18 @@ app.use(flash()); // use connect-flash for flash messages
 // routes ======================================================================
 require('./config/routes.js')(app); // load our routes and pass in our app
 
+// user certs ==================================================================
+var options = {
+    key: fs.readFileSync('./config/rootCA.key'),
+    cert: fs.readFileSync('./config/rootCA.crt')
+}
 
-//launch ======================================================================
-app.listen(port);
-console.log('The magic happens on port ' + port);
+//launch =======================================================================
+var server = https.createServer(options, app).listen(port, () => {
+    console.log('The magic happens securely on port ' + port);
+});
+// app.listen(port);
+// console.log('The magic happens on port ' + port);
 
 //catch 404 and forward to error handler
 app.use(function (req, res, next) {
