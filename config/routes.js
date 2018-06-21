@@ -15,8 +15,8 @@ module.exports = function (app) {
     app.get('/procedures/codes', home.loggedIn, edw.getProceduresBySearchParams);
 
     app.get('/bedCensus', home.loggedIn, edw.allUnitsCensus);
-    app.get('/bedCensus/:unit', home.loggedIn, edw.censusByUnit);
-    app.get('bedCensus/all', home.loggedIn, edw.allUnitsCensus);
+    app.get('/bedCensus/all', home.loggedIn, edw.allUnitsCensus);
+    app.get('/bedCensus/unit/:unit', home.loggedIn, edw.censusByUnit);
 
     app.post('/login', home.login);
     app.get('/logout', home.loggedIn, home.logout);
