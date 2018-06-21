@@ -1,5 +1,5 @@
-var home = require('../app/controllers/main');
-var edw = require('../app/controllers/edw');
+var home = require('../app/edw/controllers/main');
+var edw = require('../app/edw/controllers/edw');
 
 //you can include all your controllers
 
