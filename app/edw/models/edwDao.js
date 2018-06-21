@@ -89,3 +89,22 @@ exports.getProceduresBySearchParams = function(req, res){
         }
     });
 }
+
+exports.getProcedureCost = function(req, res, code){
+    var options = {
+        uri: constants.url_procedures_cost + "/" + code,
+        method: 'GET',
+        headers: req.headers,
+        rejectUnauthorized: false, // DELETE THIS!!!!        
+    }
+
+    request(options, function(err, response){
+        if (err){
+            res.send(err.message);
+        }
+        else{
+            res.headers = response.headers;
+            res.send(response.body);
+        }
+    });
+}

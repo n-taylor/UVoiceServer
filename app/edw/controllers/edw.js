@@ -16,3 +16,8 @@ exports.allProceduresCategories = function(req, res){
 exports.getProceduresBySearchParams = function(req, res){
     edw.getProceduresBySearchParams(req, res);
 }
+
+exports.getProcedureCost = function(req, res){
+    var code = req.params.code;
+    edw.getProcedureCost(req, res, code);
+}

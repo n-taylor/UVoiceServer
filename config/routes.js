@@ -13,6 +13,7 @@ module.exports = function (app) {
 
     app.get('/procedures/allCategories', home.loggedIn, edw.allProceduresCategories);
     app.get('/procedures/codes', home.loggedIn, edw.getProceduresBySearchParams);
+    app.get('/procedures/cost/:code', home.loggedIn, edw.getProcedureCost);
 
     app.get('/bedCensus', home.loggedIn, edw.allUnitsCensus);
     app.get('/bedCensus/all', home.loggedIn, edw.allUnitsCensus);

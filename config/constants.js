@@ -16,4 +16,5 @@ module.exports = {
 	'url_procedures_codes_by_hierarchy':'https://clinweb.med.utah.edu/pricing-transparency-api/pricing/getBySearchParams',
 	'url_bed_census_all':'https://clinweb.med.utah.edu/pricing-transparency-api/census/getCensus',
 	'url_bed_census_unit':'https://clinweb.med.utah.edu/pricing-transparency-api/census/getCensusByUnit',
+	'url_procedures_cost':'https://clinweb.med.utah.edu/pricing-transparency-api/pricing/getCost',
 };
