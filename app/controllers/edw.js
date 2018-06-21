@@ -16,3 +16,7 @@ exports.allUnitsCensus = function(req, res){
 exports.allProceduresCategories = function(req, res){
     edw.allProceduresCategories(req, res);
 }
+
+exports.getProceduresBySearchParams = function(req, res){
+    edw.getProceduresBySearchParams(req, res);
+}

@@ -30,8 +30,41 @@ exports.allProceduresCategories = function(req, res){
         if (err){
             res.send(err.message);
         }
+        else{
+            res.headers = response.headers;
+            res.send(response.body);
+        }
+    });
+}
 
-        res.headers = response.headers;
-        res.send(response.body);
+exports.getProceduresBySearchParams = function(req, res){
+    var params = req.query;
+
+    var path = '';
+    if (params.category){
+        path += "/" + params.category;
+        if (params.subCategory){
+            path += "/" + params.subCategory;
+            if (params.extremity){
+                path += "/" + params.extremity;
+            }
+        }
+    }
+
+    var options = {
+        uri: constants.url_procedures_codes_by_hierarchy + path,
+        method: 'GET',
+        headers: req.headers,
+        rejectUnauthorized: false, // DELETE THIS!!!!
+    }
+
+    request(options, function(err, response){
+        if (err){
+            res.send
+        }
+        else {
+            res.headers = response.headers;
+            res.send(response.body);
+        }
     });
 }

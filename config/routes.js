@@ -12,6 +12,7 @@ module.exports = function (app) {
     app.get('/home', home.loggedIn, home.home);//home
 
     app.get('/procedures/allCategories', home.loggedIn, edw.allProceduresCategories);
+    app.get('/procedures/codes', home.loggedIn, edw.getProceduresBySearchParams);
 
     app.get('/bedCensus', home.loggedIn, edw.allUnitsCensus);
     app.get('/bedCensus/:unit', home.loggedIn, edw.censusByUnit);
