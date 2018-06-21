@@ -69,11 +69,17 @@ exports.login = function(req, res) {
 		if (error){
 			throw error;
 		}
-		var match = cookieRegex.exec(response.headers['set-cookie'][0]);
-		res.headers = response.headers;
-		if (match){
-			res.cookie(match[1], match[2]);
+
+		var json = JSON.parse(response.body);
+
+		if (json.authenticated === true){
+			var match = cookieRegex.exec(response.headers['set-cookie'][0]);
+			res.headers = response.headers;
+			if (match){
+				res.cookie(match[1], match[2]);
+			}
 		}
+		
 		res.send(response.body);
 	});
 
