@@ -19,7 +19,12 @@ exports.loggedIn = function(req, res, next)
 
 	// }
 
-	next();
+	if (req.session.auth){
+		next();
+	}
+	else {
+		res.send('Access Denied');
+	}
 }
 
 exports.home = function(req, res) {
@@ -74,6 +79,9 @@ exports.login = function(req, res) {
 
 		if (json.authenticated === true){
 			var match = cookieRegex.exec(response.headers['set-cookie'][0]);
+			if (res.req.session){
+				res.req.session.auth = true;
+			}
 			res.headers = response.headers;
 			if (match){
 				res.cookie(match[1], match[2]);
@@ -97,6 +105,13 @@ exports.logout = function (req, res){
 			throw err;
 		}
 
+		if (req.session){
+			req.session.destroy(function(err){
+				if (!err){
+					console.log('Session destroyed');
+				}
+			});
+		}
 		res.headers = response.headers;
 		res.send(response.body);
 	});

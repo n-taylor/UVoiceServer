@@ -40,11 +40,12 @@ app.set('views', path.join(__dirname, 'app/views'));
 app.set('view engine', 'ejs');
 //app.set('view engine', 'ejs'); // set up ejs for templating
 
-// app.use(session({
-//     secret: 'UVoiceAgent!',
-//     resave: true,
-//     saveUninitialized: true
-// }));
+app.use(session({
+    secret: 'UVoiceAgent!',
+    resave: true,
+    saveUninitialized: true,
+    maxAge: 3600000,
+}));
 
 app.use(flash()); // use connect-flash for flash messages
 
