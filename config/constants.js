@@ -17,4 +17,5 @@ module.exports = {
 	'url_bed_census_all':'https://clinweb.med.utah.edu/pricing-transparency-api/census/getCensus',
 	'url_bed_census_unit':'https://clinweb.med.utah.edu/pricing-transparency-api/census/getCensusByUnit',
 	'url_procedures_cost':'https://clinweb.med.utah.edu/pricing-transparency-api/pricing/getCost',
+	'url_client_location':'mse-park.net.utah.edu/api/contextaware/v1/location/clients/',
 };

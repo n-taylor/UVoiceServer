@@ -1,5 +1,6 @@
 var home = require('../app/edw/controllers/main');
 var edw = require('../app/edw/controllers/edw');
+var cisco = require('../app/cisco/controllers/cisco');
 
 //you can include all your controllers
 
@@ -22,5 +23,5 @@ module.exports = function (app) {
     app.post('/login', home.login);
     app.get('/logout', home.loggedIn, home.logout);
 
-
+    app.get('/cisco/client/location/:macAddress', home.loggedIn, cisco.clientLocation);
 }

@@ -15,7 +15,7 @@ var path = require('path');
 var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var bodyParser = require('body-parser');
+var session = require('express-session');
 var dateFormat = require('dateformat');
 var now = new Date();
 
@@ -39,6 +39,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('views', path.join(__dirname, 'app/views'));
 app.set('view engine', 'ejs');
 //app.set('view engine', 'ejs'); // set up ejs for templating
+
+// app.use(session({
+//     secret: 'UVoiceAgent!',
+//     resave: true,
+//     saveUninitialized: true
+// }));
 
 app.use(flash()); // use connect-flash for flash messages
 
