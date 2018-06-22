@@ -78,10 +78,13 @@ exports.login = function(req, res) {
 		var json = JSON.parse(response.body);
 
 		if (json.authenticated === true){
-			var match = cookieRegex.exec(response.headers['set-cookie'][0]);
+			// Set the session to authorized
 			if (res.req.session){
 				res.req.session.auth = true;
 			}
+
+			// Set the cookie to the EDW cookie received
+			var match = cookieRegex.exec(response.headers['set-cookie'][0]);
 			res.headers = response.headers;
 			if (match){
 				res.cookie(match[1], match[2]);
@@ -107,8 +110,8 @@ exports.logout = function (req, res){
 
 		if (req.session){
 			req.session.destroy(function(err){
-				if (!err){
-					console.log('Session destroyed');
+				if (err){
+					throw err;
 				}
 			});
 		}
