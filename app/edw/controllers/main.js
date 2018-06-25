@@ -23,7 +23,8 @@ exports.loggedIn = function(req, res, next)
 		next();
 	}
 	else {
-		res.send('Access Denied');
+		res.writeHead(401);
+		res.end('Access Denied');
 	}
 }
 
