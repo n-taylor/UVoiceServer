@@ -21,7 +21,7 @@ module.exports = function (app) {
     app.get('/bedCensus/unit/:unit', home.loggedIn, edw.censusByUnit);
     app.post('/onCall/getMID', home.getMID);
     app.post('/onCall/getNumbers', home.getNumbers);
-    app.post('/onCall/getMID', home.getMID);
+    app.post('/onCall/getPagers', home.getPagers);
 
     app.post('/login', home.login);
     app.get('/logout', home.loggedIn, home.logout);

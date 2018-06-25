@@ -201,5 +201,47 @@ client.on('close', function() {
 
 }
 
+exports.getPagers = function (req, res){
+
+	var obj = { code: req.body.code};
+
+	var code = obj.code
+
+	 var client = new net.Socket();
+
+client.connect(9720, '155.100.69.40', function() {
+	console.log('Connected');
+	client.write('<?xml version="1.0" encoding="utf-8"?>'+ 
+	'<procedureCall name="GetPagerId" xmlns="http://xml.amcomsoft.com/api/request">'+
+	'<parameter name="mid" null="false">'+code+'</parameter>'+   
+    '</procedureCall>'
+	);
+});
+
+client.on('data', function(data) {
+	console.log('Received: ' + data);
+
+	var parseString= xml.parseString;
+
+	var responceObject = new Object;
+
+	parseString(data, function(err, result){
+
+			responceObject = { numbers: result.procedureResult.success[0].parameter[1]._}
+	
+	})
+
+
+	res.send(responceObject);
+
+// kill client after server's response
+});
+
+client.on('close', function() {
+	console.log('Connection closed');
+});
+
+}
+
 
     
