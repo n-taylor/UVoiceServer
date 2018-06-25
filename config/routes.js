@@ -1,6 +1,7 @@
 var home = require('../app/edw/controllers/main');
 var edw = require('../app/edw/controllers/edw');
 
+
 //you can include all your controllers
 
 module.exports = function (app) {
@@ -18,6 +19,9 @@ module.exports = function (app) {
     app.get('/bedCensus', home.loggedIn, edw.allUnitsCensus);
     app.get('/bedCensus/all', home.loggedIn, edw.allUnitsCensus);
     app.get('/bedCensus/unit/:unit', home.loggedIn, edw.censusByUnit);
+    app.post('/onCall/getMID', home.getMID);
+    app.post('/onCall/getNumbers', home.getNumbers);
+    app.post('/onCall/getMID', home.getMID);
 
     app.post('/login', home.login);
     app.get('/logout', home.loggedIn, home.logout);
