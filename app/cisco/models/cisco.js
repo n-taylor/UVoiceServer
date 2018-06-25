@@ -19,10 +19,10 @@ exports.clientLocation = function(req, res, mac){
         }
         else {
         // Try getting a response from the EBC campus
-            getResponse(req, EBC, mac, id, pass, function(err, response){
+            getClientLocationResponse(req, EBC, mac, id, pass, function(err, response){
                 // If a valid response was not obtained, try getting a response from PARK campus
                 if (err || !response.body){
-                    getResponse(req, PARK, mac, id, pass, function(parkErr, parkResponse){
+                    getClientLocationResponse(req, PARK, mac, id, pass, function(parkErr, parkResponse){
                         // If a valid response was not obtained, send a 400 Bad Request error
                         if (parkErr || !parkResponse.body){
                             res.writeHead(400);
@@ -40,35 +40,69 @@ exports.clientLocation = function(req, res, mac){
             });
         }
 
-        // var url = 'https://' + id + ':' + pass + '@' + constants.url_client_location_park + mac + '.json';
-        
-        // var options = {
-        //     uri: url,
-        //     method: 'GET',
-        //     headers: req.headers,
-        //     rejectUnauthorized: false, // DELETE THIS!!!! 
-        //     agentOptions: {
-        //         ca: fs.readFileSync('config/mse-parknetutahedu.crt'),
-        //     }       
-        // }
-    
-        // request(options, function(err, response){
-        //     if (err){
-        //         res.send(err.message);
-        //     }
-        //     else{
-        //         res.headers = response.headers;
-        //         if (!response.body.trim()){
-        //             response.body = 'Empty Response';
-        //         }
-        //         res.send(response.body);
-        //     }
-        // });
-
     });
 }
 
-var getResponse = function(req, campus, mac, id, pass, next){
+exports.tagLocation = function(req, res, mac){
+    getCredentials(function(err, id, pass){
+        if (err){
+            res.writeHead(403);
+            res.end('This service is temporarily unavailable');
+        }
+        else {
+            getTagLocationResponse(req, EBC, mac, id, pass, function(err, response){
+                if (err || !response.body){
+                    getTagLocationResponse(req, PARK, mac, id, pass, function(err, response){
+                        if (err || !response.body){
+                            res.writeHead(400);
+                            res.end('No data was found');
+                        }
+                        else {
+                            res.send(response.body);
+                        }
+                    })
+                }
+                else {
+                    res.send(response.body);
+                }
+            });
+        }
+    });
+}
+
+var getTagLocationResponse = function(req, campus, mac, id, pass, next){
+    var hostName = '';
+    var fileName = '';
+    if (campus === EBC){
+        hostName = constants.url_tag_location_ebc;
+        fileName = 'config/mse-ebcnetutahedu.crt';
+    }
+    else if (campus === PARK){
+        hostName = constants.url_tag_location_park;
+        fileName = 'config/mse-parknetutahedu.crt';        
+    }
+    else {
+        next(new Error('The campus specified is not supported'), undefined);
+    }
+
+    var url = 'https://' + id + ':' + pass + '@' + hostName + mac + '.json';
+    
+    var cert = fs.readFileSync(fileName);
+
+    var options = {
+        uri: url,
+        method: 'GET',
+        headers: req.headers,
+        rejectUnauthorized: false, // DELETE THIS!!!! 
+        agentOptions: {
+            ca: cert,
+        } 
+    }
+
+    request(options, next);
+}
+
+var getClientLocationResponse = function(req, campus, mac, id, pass, next){
     var hostName = '';
     var fileName = '';
     if (campus === EBC){
@@ -131,32 +165,4 @@ var getCredentials = function(next){
             });            
         }
     });
-    
-	// var connection = mysql.createConnection({
-	// 	host: 'localhost',
-	// 	user: 'root',
-	// 	password: '15McAllen17',
-	// 	database: 'app_dev_db',
-	// 	port: 3306
-	// })
-
-    // connection.connect(function(err){
-    //     if (err){
-    //         next(err, undefined, undefined);
-    //         return;
-    //     }
-    // });
-
-	// connection.query("SELECT * FROM sources WHERE Name = 'CISCO'", function(err, rows){
-	// 	if (err){
-	// 		throw err;
-	// 	}
-
-    //     id = rows[0].Identifier;
-    //     pass = rows[0].Encoded;
-
-    //     next(id, pass);
-	// });
-
-	// connection.end();
 }

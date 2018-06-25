@@ -19,4 +19,6 @@ module.exports = {
 	'url_procedures_cost':'https://clinweb.med.utah.edu/pricing-transparency-api/pricing/getCost',
 	'url_client_location_park':'mse-park.net.utah.edu/api/contextaware/v1/location/clients/',
 	'url_client_location_ebc':'mse-ebc.net.utah.edu/api/contextaware/v1/location/clients/',
+	'url_tag_location_park':'mse-park.net.utah.edu/api/contextaware/v1/location/tags/',
+	'url_tag_location_ebc':'mse-ebc.net.utah.edu/api/contextaware/v1/location/tags/',
 };

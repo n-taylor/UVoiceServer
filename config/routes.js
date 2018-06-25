@@ -24,4 +24,5 @@ module.exports = function (app) {
     app.get('/logout', home.loggedIn, home.logout);
 
     app.get('/cisco/client/location/:macAddress', home.loggedIn, cisco.clientLocation);
+    app.get('/cisco/tag/location/:macAddress', home.loggedIn, cisco.tagLocation);
 }
