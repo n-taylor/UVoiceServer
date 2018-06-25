@@ -55,7 +55,7 @@ require('./config/routes.js')(app); // load our routes and pass in our app
 // user certs ==================================================================
 var options = {
     key: fs.readFileSync('./config/rootCA.key'),
-    cert: fs.readFileSync('./config/emulator.crt')
+    cert: fs.readFileSync('./config/rootCA.crt')
 }
 
 //launch =======================================================================
