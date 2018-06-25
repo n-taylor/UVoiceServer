@@ -21,4 +21,5 @@ module.exports = {
 	'url_client_location_ebc':'mse-ebc.net.utah.edu/api/contextaware/v1/location/clients/',
 	'url_tag_location_park':'mse-park.net.utah.edu/api/contextaware/v1/location/tags/',
 	'url_tag_location_ebc':'mse-ebc.net.utah.edu/api/contextaware/v1/location/tags/',
+	'url_oncall':'https://155.100.69.40:9720',
 };
