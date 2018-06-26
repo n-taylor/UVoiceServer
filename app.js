@@ -43,7 +43,7 @@ app.set('view engine', 'ejs');
 app.use(session({
     secret: 'UVoiceAgent!',
     resave: true,
-    saveUninitialized: true,
+    saveUninitialized: false,
     maxAge: 3600000,
 }));
 
