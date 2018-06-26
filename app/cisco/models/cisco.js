@@ -140,7 +140,8 @@ var getCredentials = function(next){
 
     pool.getConnection(function(err, connection){
         if(err){
-            next(err, undefined, undefined);
+            // next(err, undefined, undefined); // Use in production
+            next(undefined, 'ITS-Innovation-VoiceApp', 'K75wz9PBp1AaCqeNfGMKVI5R'); // Only to debug
         }
         else {
             connection.query("SELECT * FROM sources WHERE Name = 'CISCO'", function(err, rows){
