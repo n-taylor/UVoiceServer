@@ -1,6 +1,7 @@
 var numeral = require('numeral');
 var bcrypt = require('bcrypt-nodejs');
 var dateFormat = require('dateformat');
+var mySql = require('mysql');
 var request = require('request');
 var constants = require('../../../config/constants');
 var WebSocket = require('ws')
@@ -21,7 +22,13 @@ exports.loggedIn = function(req, res, next)
 
 	// }
 
-	next();
+	if (req.session.auth){
+		next();
+	}
+	else {
+		res.writeHead(401);
+		res.end('Access Denied');
+	}
 }
 
 exports.home = function(req, res) {
@@ -75,6 +82,12 @@ exports.login = function(req, res) {
 		var json = JSON.parse(response.body);
 
 		if (json.authenticated === true){
+			// Set the session to authorized
+			if (res.req.session){
+				res.req.session.auth = true;
+			}
+
+			// Set the cookie to the EDW cookie received
 			var match = cookieRegex.exec(response.headers['set-cookie'][0]);
 			res.headers = response.headers;
 			if (match){
@@ -99,6 +112,13 @@ exports.logout = function (req, res){
 			throw err;
 		}
 
+		if (req.session){
+			req.session.destroy(function(err){
+				if (err){
+					throw err;
+				}
+			});
+		}
 		res.headers = response.headers;
 		res.send(response.body);
 	});
