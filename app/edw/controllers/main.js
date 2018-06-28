@@ -93,7 +93,7 @@ exports.login = function(req, res) {
 			if (match){
 				res.cookie(match[1], match[2]);
 			}
-		}
+		}		
 		
 		res.send(response.body);
 	});
