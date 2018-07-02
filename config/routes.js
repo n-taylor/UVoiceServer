@@ -24,6 +24,7 @@ module.exports = function (app) {
     app.post('/onCall/getMID', home.loggedIn, home.getMID);
     app.post('/onCall/getNumbers', home.loggedIn, home.getNumbers);
     app.post('/onCall/getMID', home.loggedIn, home.getMID);
+    app.post('/onCall/getPagers', home.loggedIn, home.getPagers);
 
     app.post('/login', home.login);
     app.get('/logout', home.loggedIn, home.logout);

@@ -155,6 +155,8 @@ client.on('data', function(data) {
 
 	parseString(data, function(err, result){
 
+
+		if  (result.procedureResult.success[0].parameter[0]._ != "-1"){
 		result.procedureResult.success[0].parameter[1].getGroupsCurrentAssignments[0].assignment.forEach(assign => {
 			responceObj = {mid: assign.mid[0], name: assign.name[0]};
 		
@@ -162,6 +164,7 @@ client.on('data', function(data) {
 			key++;
 
 		});
+	}
 	
 	})
 
@@ -193,6 +196,48 @@ client.connect(9720, '155.100.69.40', function() {
 	'<parameter name="mid" null="false">'+code+'</parameter>'+ 
 	'<parameter name="phone_number_type" null="true"></parameter>'+ 
 	'</procedureCall>'
+	);
+});
+
+client.on('data', function(data) {
+	console.log('Received: ' + data);
+
+	var parseString= xml.parseString;
+
+	var responceObject = new Object;
+
+	parseString(data, function(err, result){
+
+			responceObject = { numbers: result.procedureResult.success[0].parameter[1]._}
+	
+	})
+
+
+	res.send(responceObject);
+
+// kill client after server's response
+});
+
+client.on('close', function() {
+	console.log('Connection closed');
+});
+
+}
+
+exports.getPagers = function (req, res){
+
+	var obj = { code: req.body.code};
+
+	var code = obj.code
+
+	 var client = new net.Socket();
+
+client.connect(9720, '155.100.69.40', function() {
+	console.log('Connected');
+	client.write('<?xml version="1.0" encoding="utf-8"?>'+ 
+	'<procedureCall name="GetPagerId" xmlns="http://xml.amcomsoft.com/api/request">'+
+	'<parameter name="mid" null="false">'+code+'</parameter>'+   
+    '</procedureCall>'
 	);
 });
 
