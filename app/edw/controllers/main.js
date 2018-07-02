@@ -155,6 +155,8 @@ client.on('data', function(data) {
 
 	parseString(data, function(err, result){
 
+
+		if  (result.procedureResult.success[0].parameter[0]._ != "-1"){
 		result.procedureResult.success[0].parameter[1].getGroupsCurrentAssignments[0].assignment.forEach(assign => {
 			responceObj = {mid: assign.mid[0], name: assign.name[0]};
 		
@@ -162,6 +164,7 @@ client.on('data', function(data) {
 			key++;
 
 		});
+	}
 	
 	})
 
