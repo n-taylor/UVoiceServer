@@ -10,6 +10,10 @@ var xml = require('xml2js')
 
 var cookieRegex = /(\S+)=(\S+); path=\S+; /;
 
+var currentToken = undefined;
+
+exports.token = () => { return currentToken; }
+
 exports.loggedIn = function(req, res, next)
 {
 	// if (req.session.user) { // req.session.passport._id
@@ -91,6 +95,8 @@ exports.login = function(req, res) {
 			var match = cookieRegex.exec(response.headers['set-cookie'][0]);
 			res.headers = response.headers;
 			if (match){
+				currentToken = match[1] + '=' + match[2];
+				require('../models/edwDao').updateCensus();
 				res.cookie(match[1], match[2]);
 			}
 		}		
