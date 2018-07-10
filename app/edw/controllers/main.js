@@ -8,6 +8,8 @@ var WebSocket = require('ws')
 var net = require('net');
 var xml = require('xml2js')
 
+const on_call_not_found = 'There are no current assignments for this area';
+
 var cookieRegex = /(\S+)=(\S+); path=\S+; /;
 
 var currentToken = undefined;
@@ -213,13 +215,23 @@ client.on('data', function(data) {
 	var responceObject = new Object;
 
 	parseString(data, function(err, result){
-
-			responceObject = { numbers: result.procedureResult.success[0].parameter[1]._}
-	
+		if (err){
+			res.writeHead(500);
+			res.end('There was an issue processing your request');
+		}
+		else {
+			var code = result.procedureResult.success[0].parameter[2]._;
+			if(code == '0'){
+				// Successful retrieval
+				responceObject = { numbers: result.procedureResult.success[0].parameter[1]._}
+				res.send(responceObject);
+			}
+			else if (code == '-1'){
+				res.writeHead(404);
+				res.end(on_call_not_found);
+			}
+		}
 	})
-
-
-	res.send(responceObject);
 
 // kill client after server's response
 });
