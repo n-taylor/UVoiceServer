@@ -1,6 +1,7 @@
 var home = require('../app/edw/controllers/main');
 var edw = require('../app/edw/controllers/edw');
 var cisco = require('../app/cisco/controllers/cisco');
+var spok = require('../app/spok/controllers/spok');
 
 
 //you can include all your controllers
@@ -21,10 +22,10 @@ module.exports = function (app) {
     app.get('/bedCensus/all', home.loggedIn, edw.allUnitsCensus);
     app.get('/bedCensus/unit/:unit', home.loggedIn, edw.censusByUnit);
 
-    app.post('/onCall/getMID', home.loggedIn, home.getMID);
-    app.post('/onCall/getNumbers', home.loggedIn, home.getNumbers);
-    app.post('/onCall/getMID', home.loggedIn, home.getMID);
-    app.post('/onCall/getPagers', home.loggedIn, home.getPagers);
+    app.post('/onCall/getMID', home.loggedIn, spok.getMID);
+    app.post('/onCall/getNumbers', home.loggedIn, spok.getNumbers);
+    app.post('/onCall/getMID', home.loggedIn, spok.getMID);
+    app.post('/onCall/getPagers', home.loggedIn, spok.getPagers);
 
     app.post('/login', home.login);
     app.get('/logout', home.loggedIn, home.logout);
