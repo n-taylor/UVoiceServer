@@ -60,6 +60,12 @@ client.on('close', function() {
 	console.log('Connection closed');
 });
 
+client.on('error', function(err){
+	console.log('Error connecting to server');
+	res.writeHead(500);
+	res.end('Error retrieving data');
+});
+
 }
 
 
