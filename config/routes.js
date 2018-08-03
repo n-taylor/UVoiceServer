@@ -2,6 +2,7 @@ var home = require('../app/edw/controllers/main');
 var edw = require('../app/edw/controllers/edw');
 var cisco = require('../app/cisco/controllers/cisco');
 var spok = require('../app/spok/controllers/spok');
+var db = require('../app/db/controllers/db');
 
 
 //you can include all your controllers
@@ -32,4 +33,9 @@ module.exports = function (app) {
 
     app.get('/cisco/client/location/:macAddress', home.loggedIn, cisco.clientLocation);
     app.get('/cisco/tag/location/:macAddress', home.loggedIn, cisco.tagLocation);
+
+    app.get('/client/location/:macAddress', home.loggedIn, cisco.clientLocation);
+    app.get('/tag/location/:macAddress', home.loggedIn, cisco.tagLocation);
+    app.get('/tag/location/category/:building/:floor/:category', home.loggedIn, db.categoryLocations);
+    
 }
