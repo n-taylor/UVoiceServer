@@ -33,23 +33,29 @@ exports.sendCategoryLocations = function(req, res, building, floor, category){
     else {
         // Get a connection with the database
         pool.getConnection(function(err, connection){
-            // Now query the category
-            var query = "select l.mac_address, a.category, l.building, l.floor, l.x, l.y from accruent as a, " +
-                "locations as l, tags as t where " +  `a.category = '${category}' and l.building = '${building}' ` +
-                `and l.floor = '${floor}' and t.rfid = a.rfid and l.mac_address = t.mac_address`;
-            connection.query(query, function(err, rows){
-                connection.release();
-                if (err){
-                    res.writeHead(500);
-                    res.end(SERVER_ERROR);
-                }
-                else {
-                    // Process and send the results as JSON
-                    var before = {"tagLocations":rows};
-                    var json = JSON.stringify(before);
-                    res.send(json);
-                }
-            });
+            if (err){
+                res.writeHead(500);
+                res.end(SERVER_ERROR);
+            }
+            else {
+                // Now query the category
+                var query = "select l.mac_address, a.category, l.building, l.floor, l.x, l.y from accruent as a, " +
+                    "locations as l, tags as t where " +  `a.category = '${category}' and l.building = '${building}' ` +
+                    `and l.floor = '${floor}' and t.rfid = a.rfid and l.mac_address = t.mac_address`;
+                connection.query(query, function(err, rows){
+                    connection.release();
+                    if (err){
+                        res.writeHead(500);
+                        res.end(SERVER_ERROR);
+                    }
+                    else {
+                        // Process and send the results as JSON
+                        var before = {"tagLocations":rows};
+                        var json = JSON.stringify(before);
+                        res.send(json);
+                    }
+                });
+            }
         });
     }
 }
