@@ -27,7 +27,6 @@ client.connect(9720, '155.100.69.40', function() {
 });
 
 client.on('data', function(data) {
-	console.log('Received: ' + data);
 
 	var parseString= xml.parseString;
 
@@ -88,7 +87,6 @@ client.connect(9720, '155.100.69.40', function() {
 });
 
 client.on('data', function(data) {
-	console.log('Received: ' + data);
 
 	var parseString= xml.parseString;
 
@@ -140,7 +138,6 @@ client.connect(9720, '155.100.69.40', function() {
 });
 
 client.on('data', function(data) {
-	console.log('Received: ' + data);
 
 	var parseString= xml.parseString;
 
