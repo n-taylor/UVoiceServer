@@ -49,10 +49,8 @@ var server = https.createServer(options, app).listen(port, () => {
 
 //catch 404 and forward to error handler
 app.use(function (req, res, next) {
-    res.status(404).render('404', {title: "Sorry, page not found"});
+    res.writeHead(404);
+    res.end('Sorry, page not found');
 });
 
-app.use(function (req, res, next) {
-    res.status(500).render('404', {title: "Sorry, page not found"});
-});
 exports = module.exports = app;
