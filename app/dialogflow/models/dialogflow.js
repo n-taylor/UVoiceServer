@@ -15,6 +15,9 @@ const UPDATE_IF_EXISTS = ` ON DUPLICATE KEY UPDATE token = VALUES(token)`;
 
 const TOKEN_RETRIEVAL_SUCCESS = 'The access token was successfully retrieved';
 
+const DIALOGFLOW_QUERY_START = '{ "queryInput": { "text": { "text": ';
+const DIALOGFLOW_QUERY_END = ', "languageCode: "en" } } }'
+
 
 const CLIENT_ID = "73695313464-4ag6sveckevnsddajmksete18cfs6ivv.apps.googleusercontent.com";
 const CLIENT_SECRET = "_avXBhN4MriGev3FVbhfKA3I";
@@ -62,7 +65,7 @@ exports.getNewToken = async function(code){
  * Gets the current access token. Returns null if there is none stored.
  * @param {function} done Gets called with an error or the token (as a string)
  */
-exports.getToken = function(done){
+var getToken = function(done){
     pool.getConnection(function(err, connection){
         if (err){
             done(err);
@@ -73,9 +76,12 @@ exports.getToken = function(done){
                     done(err);
                 }
                 else {
-                    if (rows && rows[0] && rows[0].access_token){
-                        done(undefined, rows[0].access_token);
-                    }     
+                    if (rows && rows[0] && rows[0].token){
+                        done(undefined, rows[0].token);
+                    }    
+                    else {
+                        done(new Error('No access token available'));
+                    } 
                 }
             });
         }
@@ -111,4 +117,66 @@ exports.storeToken = async function(token, done){
             }
         });   
     } 
+}
+
+/**
+ * Forwards the given query to DialogFlow and forwards the response received.
+ * @param {string} sessionId 36 bytes or less. Recommended using req.sessionID
+ * @param {string} query The query in text form.
+ * @param {function(string, object)} done The callback function with the action and result parameters
+ */
+exports.getQueryResponse = function(sessionId, query, done){
+    let post_data = JSON.stringify({
+        "queryInput": {
+            "text": {
+                "text": query,
+                "languageCode":"en"
+            }
+        }
+    });
+
+    let post_options = {
+        host: 'dialogflow.googleapis.com',
+        path: '/v2/projects/voiceagent-v2/agent/sessions/' + sessionId + ':detectIntent',
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': post_data.length
+        }
+    };
+
+    getToken(function(error, token){
+        if (error){
+            done(error);
+        }
+        else {
+            post_options.headers['Authorization'] = 'Bearer ' + token;
+            // Set up the request
+            var post_req = https.request(post_options, function(res) {
+                res.setEncoding('utf8');
+
+                res.on('data', function (chunk) {
+                    var result = JSON.parse(chunk);
+                    if (result.error){
+                        done(result.error.message);
+                    }
+                    else if (result.queryResult) {
+                        let response = {
+                            action: result.queryResult.action,
+                            parameters: result.queryResult.parameters,
+                            fulfillmentText: result.queryResult.fulfillmentText
+                        }
+                        done(undefined, response);
+                    }
+                    else {
+                        done(new Error('Not sure how to parse the response'));
+                    }
+                });
+            });
+
+            // post the data
+            post_req.write(post_data);
+            post_req.end();
+        }
+    });
 }

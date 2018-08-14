@@ -3,6 +3,7 @@ var model = require('../models/dialogflow');
 var pool = require('../../db/models/pool');
 
 const RETRIEVE_TOKEN_ERROR = 'There was an error retrieving and storing the access token';
+const RESPONSE_ERROR = 'There was an error communicating with DialogFlow';
 
 /**
  * Redirects the user to the page where the appropriate permissions are requested.
@@ -49,4 +50,30 @@ exports.retrieveNewToken = function(req, res){
             res.writeHead(500);
             res.send(RETRIEVE_TOKEN_ERROR);
         });
+}
+
+/**
+ * Sends a request to DialogFlow with the text contained in the post request received.
+ * The text must be a string labeled "queryText".
+ * Sends the results from DialogFlow throught the res object 
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.processQuery = function(req, res){
+    let query = req.body.queryText;
+
+    model.getQueryResponse(req.sessionID, query, function(error, response){
+        if (error){
+            res.writeHead(500);
+            if (error.message){
+                res.end(error.message);
+            }
+            else {
+                res.end(RESPONSE_ERROR);
+            }
+        }
+        else {
+            res.send(response);
+        }
+    });
 }

@@ -41,4 +41,5 @@ module.exports = function (app) {
     
     app.get('/voice/permissions', df.getPermissions);
     app.get('/voice/oauthcallback', df.retrieveNewToken);
+    app.post('/voice/query', home.loggedIn, df.processQuery);
 }
